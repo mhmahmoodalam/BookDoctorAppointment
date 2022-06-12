@@ -2,8 +2,10 @@ package com.upgrad.bookmyconsultation.service;
 
 import com.upgrad.bookmyconsultation.entity.Doctor;
 import com.upgrad.bookmyconsultation.entity.Rating;
+import com.upgrad.bookmyconsultation.exception.ResourceUnAvailableException;
 import com.upgrad.bookmyconsultation.repository.DoctorRepository;
 import com.upgrad.bookmyconsultation.repository.RatingsRepository;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -24,8 +26,17 @@ public class RatingsService {
 	@Autowired
 	private DoctorRepository doctorRepository;
 
-	
-	//create a method name submitRatings with void return type and parameter of type Rating
+  public void submitRatings(Rating submitRatingRequest) {
+		var doctor = doctorRepository.findById(submitRatingRequest.getDoctorId())
+				.orElseThrow(() -> new ResourceUnAvailableException());
+		submitRatingRequest.setId(UUID.randomUUID().toString());
+		ratingsRepository.save(submitRatingRequest);
+		var averageRating = (doctor.getRating() + submitRatingRequest.getRating())/2;
+		doctor.setRating(averageRating);
+		doctorRepository.save(doctor);
+  }
+
+  //create a method name submitRatings with void return type and parameter of type Rating
 		//set a UUID for the rating
 		//save the rating to the database
 		//get the doctor id from the rating object

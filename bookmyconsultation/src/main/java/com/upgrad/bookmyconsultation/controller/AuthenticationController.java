@@ -26,24 +26,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-	@Autowired
-	private AuthenticationService authenticationService;
+  @Autowired
+  private AuthenticationService authenticationService;
 
-	@Autowired
-	private AuthTokenService authTokenService;
+  @Autowired
+  private AuthTokenService authTokenService;
 
-	@PostMapping(path = "/login")
-	public ResponseEntity<AuthorizedUser> login(@RequestHeader final String authorization) throws ApplicationException {
-		final BasicAuthDecoder basicAuthDecoder = new BasicAuthDecoder(authorization);
-		final AuthorizedUser authorizedUser = authenticationService.authenticate(basicAuthDecoder.getEmail(), basicAuthDecoder.getPassword());
-		return ResponseEntity.status(HttpStatus.OK).body(authorizedUser);
-	}
+  @PostMapping(path = "/login")
+  public ResponseEntity<AuthorizedUser> login(@RequestHeader final String authorization)
+      throws ApplicationException {
+    final BasicAuthDecoder basicAuthDecoder = new BasicAuthDecoder(authorization);
+    final AuthorizedUser authorizedUser =
+        authenticationService.authenticate(
+            basicAuthDecoder.getEmail(), basicAuthDecoder.getPassword());
+    return ResponseEntity.status(HttpStatus.OK).body(authorizedUser);
+  }
 
-	@PostMapping(path = "/logout")
-	public void logout(@RequestHeader final String authorization) throws ApplicationException {
-		final BearerAuthDecoder authDecoder = new BearerAuthDecoder(authorization);
-		authTokenService.invalidateToken(authDecoder.getAccessToken());
-	}
-
-
+  @PostMapping(path = "/logout")
+  public void logout(@RequestHeader final String authorization) throws ApplicationException {
+    final BearerAuthDecoder authDecoder = new BearerAuthDecoder(authorization);
+    authTokenService.invalidateToken(authDecoder.getAccessToken());
+  }
 }
