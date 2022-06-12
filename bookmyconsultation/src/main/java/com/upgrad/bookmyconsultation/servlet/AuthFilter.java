@@ -45,7 +45,7 @@ public class AuthFilter extends ApiFilter {
 				throw new UnauthorizedException(RestErrorCode.ATH_002);
 			}
 
-			if (!pathInfo.contains("login")) {
+			/*if (!pathInfo.contains("login")) {
 				final String accessToken = new BearerAuthDecoder(authorization).getAccessToken();
 				try {
 					final UserAuthToken userAuthTokenEntity = authTokenService.validateToken(accessToken);
@@ -54,7 +54,7 @@ public class AuthFilter extends ApiFilter {
 					servletResponse.sendError(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
 					return;
 				}
-			}
+			}*/
 		}
 		filterChain.doFilter(servletRequest, servletResponse);
 	}

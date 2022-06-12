@@ -5,12 +5,15 @@ import com.upgrad.bookmyconsultation.exception.InvalidInputException;
 import com.upgrad.bookmyconsultation.exception.SlotUnavailableException;
 import com.upgrad.bookmyconsultation.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,10 +26,14 @@ public class AppointmentController {
 
 	//create a method post method named bookAppointment with return type ReponseEntity
 		//method has paramter of type Appointment, use RequestBody Annotation for mapping
-	
 		//save the appointment details to the database and save the response from the method used
 		//return http response using ResponseEntity
-	
+	@RequestMapping(method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> bookAppointment(@RequestBody  Appointment appointment)
+			throws InvalidInputException {
+		return ResponseEntity.ok(appointmentService.bookAppointment(appointment));
+	}
 	
 	
 	
@@ -37,6 +44,9 @@ public class AppointmentController {
 		//save the response
 		//return the response as an http response
 	
-	
+	@RequestMapping(value = "/{appointmentId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Appointment> getAppointment(@PathVariable(name = "appointmentId") String appointmentId){
+		return  ResponseEntity.ok(appointmentService.getAppointment(appointmentId));
+	}
 
 }

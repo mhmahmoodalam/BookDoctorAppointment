@@ -8,6 +8,7 @@ import com.upgrad.bookmyconsultation.repository.AppointmentRepository;
 import com.upgrad.bookmyconsultation.repository.UserRepository;
 import com.upgrad.bookmyconsultation.util.ValidationUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,9 @@ public class AppointmentService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private AppointmentRepository appointmentRepository;
+
 
 	//create a method name appointment with the return type of String and parameter of type Appointment
 	//declare exceptions 'SlotUnavailableException' and 'InvalidInputException'
@@ -35,7 +39,17 @@ public class AppointmentService {
 		//save the appointment details to the database
 		//return the appointment id
 	
-	
+	public String bookAppointment(Appointment appointment) throws SlotUnavailableException
+			, InvalidInputException{
+			ValidationUtils.validate(appointment);
+		  var appointmentExist = appointmentRepository.findByDoctorIdAndTimeSlotAndAppointmentDate(
+					appointment.getDoctorId(),appointment.getTimeSlot(),appointment.getAppointmentDate());
+			if(appointmentExist != null){
+				 throw new SlotUnavailableException();
+			}
+			appointmentRepository.save(appointment);
+			return appointment.getAppointmentId();
+	}
 
 
 	//create a method getAppointment of type Appointment with a parameter name appointmentId of type String
@@ -43,7 +57,12 @@ public class AppointmentService {
 		//if the appointment exists return the appointment
 		//else throw ResourceUnAvailableException
 		//tip: use Optional.ofNullable(). Use orElseThrow() method when Optional.ofNullable() throws NULL
-	
+	public Appointment getAppointment(String appointmentId) throws ResourceUnAvailableException{
+		var appointment = appointmentRepository.findById(appointmentId)
+				.orElseThrow( () -> new ResourceUnAvailableException());
+		return appointment;
+	}
+
 	public List<Appointment> getAppointmentsForUser(String userId) {
 		return appointmentRepository.findByUserId(userId);
 	}

@@ -33,7 +33,5 @@ public class RatingsService {
 		//modify the average rating for that specific doctor by including the new rating
 		//save the doctor object to the database
 	
-	
 
-	}
 }

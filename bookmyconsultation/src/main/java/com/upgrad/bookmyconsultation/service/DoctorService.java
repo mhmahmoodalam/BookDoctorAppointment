@@ -6,7 +6,7 @@ import com.upgrad.bookmyconsultation.enums.Speciality;
 import com.upgrad.bookmyconsultation.exception.InvalidInputException;
 import com.upgrad.bookmyconsultation.exception.ResourceUnAvailableException;
 import com.upgrad.bookmyconsultation.model.TimeSlot;
-import com.upgrad.bookmyconsultation.repository.AddressRepository;
+//import com.upgrad.bookmyconsultation.repository.AddressRepository;
 import com.upgrad.bookmyconsultation.repository.AppointmentRepository;
 import com.upgrad.bookmyconsultation.repository.DoctorRepository;
 import com.upgrad.bookmyconsultation.util.ValidationUtils;
@@ -28,8 +28,8 @@ public class DoctorService {
 	private AppointmentRepository appointmentRepository;
 	@Autowired
 	private DoctorRepository doctorRepository;
-	@Autowired
-	private AddressRepository addressRepository;
+	//@Autowired
+	//private AddressRepository addressRepository;
 
 	
 	//create a method register with return type and parameter of typeDoctor
@@ -84,5 +84,13 @@ public class DoctorService {
 
 		return timeSlot;
 
+	}
+
+	public Doctor getDoctor(String id) {
+		return new Doctor();
+	}
+
+	public Doctor register(Doctor doctor) {
+		return new Doctor();
 	}
 }
