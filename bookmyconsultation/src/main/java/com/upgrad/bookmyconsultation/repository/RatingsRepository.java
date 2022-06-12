@@ -13,4 +13,5 @@ public interface RatingsRepository extends CrudRepository<Rating,String>{
 //create an interface RatingsRepository that extends CrudRepository
 	//create a method findByDoctorId that returns a list of type Rating
 	//define method parameter doctorId of type String
+  public List<Rating> findByDoctorId(String doctorId);
 }

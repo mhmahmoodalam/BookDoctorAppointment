@@ -25,7 +25,7 @@ public class AppointmentController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> bookAppointment(@RequestBody Appointment appointment)
       throws InvalidInputException {
-    return ResponseEntity.ok(appointmentService.bookAppointment(appointment));
+    return ResponseEntity.ok(appointmentService.appointment(appointment));
   }
 
   @RequestMapping(
