@@ -53,8 +53,8 @@ export const getFilteredDoctors = (filter = {}) => {
     });
 };
 
-export const getMovieDetail = (id) => {
-  return fetch(baseUrl + `/movies/${id}`, {
+export const getDoctorDetail = (id) => {
+  return fetch(baseUrl + `/doctors/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -67,14 +67,13 @@ export const getMovieDetail = (id) => {
     });
 };
 
-export const getMovieShowDetails = (id, dataShows) => {
-  return fetch(baseUrl + `/movies/${id}/shows`, {
+export const getUserDetails = (username) => {
+  return fetch(baseUrl + `/users/${username}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-cache",
-    },
-    body: dataShows,
+    }
   })
     .then((response) => response.json())
     .catch(() => {
@@ -82,15 +81,14 @@ export const getMovieShowDetails = (id, dataShows) => {
     });
 };
 
-export const bookTicket = (data) => {
-  return fetch(baseUrl + `/bookings`, {
-    method: "POST",
+export const getDoctorAvailableTimeSlot = (doctorId,date) => {
+  return fetch(baseUrl + `/doctors/${doctorId}/timeSlots?date=${date}`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-cache",
       Authorization: "Bearer " + getToken(),
-    },
-    body: data,
+    }
   })
     .then((response) => response.json())
     .catch(() => {

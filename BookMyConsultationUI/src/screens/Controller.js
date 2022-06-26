@@ -31,14 +31,16 @@ const theme = createTheme({
 const Controller = () => {
   const [popupIsOpen, setPopupIsOpen] = React.useState(false);
   const [popupType, setPopupType] = React.useState("");
+  const [popupData, setPopupData] = React.useState(null);
   const [isAuthenticated, setAuthenticated] = React.useState(TokenUtil.isAuthenticated());
   const handleLogout = () => {
     setAuthenticated(false)
     TokenUtil.clearToken()
   }
-  const showPopup= (type) => {
+  const showPopup= (type,data) => {
     setPopupType(type)
     setPopupIsOpen(true)
+    setPopupData(data)
   }
   const contextValue = {
     popupIsOpen,
@@ -64,7 +66,7 @@ const Controller = () => {
             />
           </div>
         </Router>
-        <Popup closePopup={()=>setPopupIsOpen(false)}/>
+        <Popup closePopup={()=>setPopupIsOpen(false)} popupData={popupData}/>
       </ThemeProvider>
     </MyContext.Provider>
   );

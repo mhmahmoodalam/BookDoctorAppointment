@@ -105,7 +105,7 @@ const Login = (props) => {
         .then((response) => {
           if (response.status === 200) {
             props.setAuthenticated(true);
-            props.setPopupIsOpen(false);
+            props.closePopup();
             TokenUtil.setToken(response);            
           } else if (response.status >= 400 && response.status < 500) {
             // won't show actual error as it can lead to guessing

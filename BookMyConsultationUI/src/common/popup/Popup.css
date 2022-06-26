@@ -1,7 +1,6 @@
 .popup__header_container{    
     border: none;
     border-radius: 0px;
-    min-width: 275px;
 }
 .popup__header {
     border: none;
@@ -9,4 +8,6 @@
     background-color: purple;
     box-shadow: none;
     color: white;
+    height: 70px;
+    padding: 11px;
 }

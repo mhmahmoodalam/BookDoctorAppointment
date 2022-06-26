@@ -5,13 +5,11 @@ import DoctorTile from "./DoctorTile";
 import SelectField from "../../common/form/SelectField";
 import { makeStyles } from '@material-ui/core/styles';
 import { MyContext } from "../Controller";
+import { Grid } from "@material-ui/core";
 const useStyles = makeStyles({
     root: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignContent: 'center',
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexGrow: 1,
+        marginTop: '20px'
     }
   });
 
@@ -39,15 +37,28 @@ const DoctorList = (props) => {
             console.log(err);
           });
     },[])
-    return <div className={classes.root}>
-        <Typography gutterBottom variant="body1" component="p" align="center">
+    return (
+    <Grid 
+      container
+      alignItems="center"
+      direction="column"
+      justifyContent="space-evenly"
+      className={classes.root}
+
+    >
+        <Typography gutterBottom variant="body1" component="p">
             Select Speciality :
         </Typography>
-        <SelectField menudata={specialistMenuData} handleSelection={(e) => setSelectedFilter(e.target.value)} selectedValue={selectedFilter} />
-        {
+        <SelectField 
+          menudata={specialistMenuData} 
+          handleSelection={(e) => setSelectedFilter(e.target.value)} 
+          selectedValue={selectedFilter} 
+          variant="filled"
+          />
+        {doctorsList.length > 0 &&
             doctorsList.map(( doctor,index) =>{
                 return <DoctorTile 
-                         {...doctor} 
+                         doctorData={doctor} 
                          key={`doctor_tile_${index}`} 
                          {...props} 
                          isAuthenticated={isAuthenticated}
@@ -55,7 +66,8 @@ const DoctorList = (props) => {
                          />
             })
         }
-    </div>
+    </Grid>
+    )
 }
 
 export default DoctorList

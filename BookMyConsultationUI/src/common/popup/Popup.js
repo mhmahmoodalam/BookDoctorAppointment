@@ -20,7 +20,7 @@ const customPopupStyles = {
 
 const Popup = (props) => { 
   const { popupIsOpen, popupType, setAuthenticated } = useContext(MyContext)    
-  const { closePopup } = props
+  const { closePopup,popupData } = props
     return (
       <div>
         <Modal
@@ -32,6 +32,8 @@ const Popup = (props) => {
            <PopupContent 
                     popupType={popupType}
                     setAuthenticated={setAuthenticated}
+                    popupData={popupData}
+                    closePopup={closePopup}
                   />        
         </Modal>
       </div>

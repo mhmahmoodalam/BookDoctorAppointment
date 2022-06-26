@@ -8,6 +8,10 @@ import Register from "../../screens/register/Register";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { makeStyles } from '@material-ui/core/styles';
+import BookAppointment from "../../screens/doctorList/BookAppointment";
+import DoctorDetails from "../../screens/doctorList/DoctorDetails";
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 const useStyles = makeStyles({
   tabs: {
         "& .MuiTabs-indicator": {
@@ -40,29 +44,40 @@ const LoginPopupContent = (props) => {
 }
 
 const BookAppointmentPopupContent = (props) => {
-    return <>
-    </>
+    return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <BookAppointment doctorDetails={props.doctorData}/>
+        </MuiPickersUtilsProvider>
+    )
 }
 
 const DoctorDetailsPopupContent = (props) => {
-    return <>
-    </>
+    return <DoctorDetails doctorDetails={props.doctorData} />
+}
+const getPopupTitle= (type) => {
+    switch(type){
+        case "Authentication" : return type; 
+        case "BookAppointment" : return "Book An Appointment"; 
+        case "DoctorDetails" : return "Doctor Details"; 
+        default: return "";
+    }
 }
 export const PopupContent = (props) => {
-    const { popupType } = props      
+    const { popupType, popupData } = props  
+    const title = getPopupTitle(popupType)
     return <Card className="popup__header_container">
                 <CardHeader  className="popup__header"      
-                    title={popupType}
+                    title={title}
                 />
                 <CardContent>
                     {popupType === "Authentication" &&
                         <LoginPopupContent {...props} />
                     }
                     {popupType === "BookAppointment" &&
-                        <BookAppointmentPopupContent {...props} />
+                        <BookAppointmentPopupContent doctorData={popupData} />
                     }
                     {popupType === "DoctorDetails" &&
-                        <DoctorDetailsPopupContent {...props} />
+                        <DoctorDetailsPopupContent doctorData={popupData} />
                     }
                 </CardContent>
             </Card>

@@ -1,10 +1,9 @@
-import React,{ useState } from "react";
+import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
+import InputLabel from '@material-ui/core/InputLabel';
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -12,29 +11,25 @@ const useStyles = makeStyles((theme) => ({
     },
     selectEmpty: {
       marginTop: theme.spacing(1),
-    },
-    inputEntry: {
-        '& .MuiFilledInput-input' :{
-            padding: '12px 12px 10px'
-        }
     }
   }));
 
 const SelectField = (props) => {
   const classes = useStyles();
-  const { menudata, handleSelection, selectedValue } = props
-    return <FormControl variant="filled" className={classes.formControl}>
+  const { menudata, handleSelection, selectedValue, label, variant } = props
+    return <FormControl variant={variant} className={classes.formControl}>
+      {label && <InputLabel id="demo-simple-select-label">{label}</InputLabel>}
     <Select
       value={selectedValue}
       onChange={handleSelection}
-      className={classes.inputEntry}
     >
       <MenuItem value="">
         <em>None</em>
       </MenuItem>
-      { menudata.map((value, index) => {
-        return <MenuItem key={`speciality_${index}`}value={value}>{value}</MenuItem>
-      })
+      { menudata && menudata.length>0 &&
+        menudata.map((value, index) => {
+          return <MenuItem key={`menu_item_${index}`}value={value}>{value}</MenuItem>
+        })
       }
     </Select>
   </FormControl>
