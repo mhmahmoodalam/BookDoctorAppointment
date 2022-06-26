@@ -1,0 +1,12 @@
+.popup__header_container{    
+    border: none;
+    border-radius: 0px;
+    min-width: 275px;
+}
+.popup__header {
+    border: none;
+    border-radius: 0px;
+    background-color: purple;
+    box-shadow: none;
+    color: white;
+}

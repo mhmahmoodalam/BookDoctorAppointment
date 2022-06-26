@@ -1,25 +1,27 @@
-import React from "react";
+import React,{useContext} from "react";
 import "./Header.css"
 import logo from "../../assets/logo.jpeg"
 import Button from '@material-ui/core/Button'
-
-const LoginButton = () => {
-    return <Button variant="contained" color="primary" >Login</Button>
+import { MyContext } from "../../screens/Controller";
+const LoginButton = (props) => {
+    return <Button variant="contained" color="primary" onClick={() => props.handleLogin()} >Login</Button>
 }
-const LogoutButton = () => {
-    return <Button variant="contained" color="secondary">Logout</Button>
+const LogoutButton = (props) => {
+    return <Button variant="contained" color="secondary" onClick={() => props.handleLogout()}>Logout</Button>
 }
 
 const Header = (props) => {
-    const { isLoggedIn } = props
+    const { isAuthenticated, handleLogout, showPopup } = useContext(MyContext)
     return <div className="header-container"> 
         <div className="header-title-container">
             <img src={logo} alt="header-logo" className="header-logo" />
             <div className="header-title">Doctor Finder</div>
         </div>
         <div className="login-btn">
-            {isLoggedIn && <LogoutButton/>}
-            {!isLoggedIn && <LoginButton/>}
+            {isAuthenticated && <LogoutButton handleLogout={handleLogout} />}
+            {!isAuthenticated && <LoginButton handleLogin={() => { 
+                showPopup("Authentication") 
+            }}/>}
         </div>
     </div>
 }
