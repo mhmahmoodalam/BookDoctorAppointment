@@ -1,8 +1,23 @@
-import React,{ useState,useEffect } from "react";
+import React from "react";
 import Typography from "@material-ui/core/Typography";
 import { Grid } from "@material-ui/core";
+import Rating from "@material-ui/lab/Rating";
+
+import { makeStyles } from '@material-ui/core/styles';
+const useStyles = makeStyles({    
+    rating: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        '& > * + *': {
+          marginLeft: 8,
+        },
+      },
+  });
 const DoctorDetails = (props) => {
     const { doctorDetails } = props
+    const classes = useStyles()
     return <Grid item xs key={doctorDetails.id} >
         {doctorDetails &&
         <>
@@ -27,9 +42,17 @@ const DoctorDetails = (props) => {
             <Typography  variant="body2" component="p" >
                 {`Mobile: ${doctorDetails.mobile}`}
             </Typography>
-            <Typography  variant="body2" component="p" >
-                {`Rating: ${doctorDetails.rating}`}
-            </Typography>
+            <div className={classes.rating}>
+                    <Typography component="p" variant="body2">
+                        Rating: 
+                    </Typography>
+                    <Rating name="rating" 
+                        defaultValue={doctorDetails.rating} 
+                        precision={0.5}
+                        readOnly 
+                        size="small" 
+                    />
+                </div>
         </>
         }
     </Grid>

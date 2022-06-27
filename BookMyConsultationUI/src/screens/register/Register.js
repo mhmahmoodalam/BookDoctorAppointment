@@ -38,21 +38,21 @@ const Register = (props) => {
   const { classes } = props;
   const formInputFields = [
     {
-      name: "first_name",
+      name: "firstName",
       label: "First Name",
       required: true,
       type: "text",
       autoFocus: true,
     },
     {
-      name: "last_name",
+      name: "lastName",
       label: "Last Name",
       required: true,
       type: "text",
       autoFocus: false,
     },
     {
-      name: "email_address",
+      name: "emailId",
       label: "Email Id",
       required: true,
       type: "email",
@@ -66,7 +66,7 @@ const Register = (props) => {
       autoFocus: false,
     },
     {
-      name: "mobile_number",
+      name: "mobile",
       label: "Mobile No",
       required: true,
       type: "text",
@@ -81,7 +81,6 @@ const Register = (props) => {
   const [formData, setFormData] = React.useState(
     generateFormInitialValues(formInputFields)
   );
-  const [canSubmit, setCanSubmit] = React.useState(false);
   const [registerFailed, setRegisterFailed] = React.useState(false);
   const [registerSuccess, setRegisterSuccess] = React.useState(false);
 
@@ -103,10 +102,10 @@ const Register = (props) => {
     }, {});
 
     if (
-      errors.email_address.isValid &&
-      !regexEmail.test(values.email_address)
+      errors.emailId.isValid &&
+      !regexEmail.test(values.emailId)
     ) {
-      errors.email_address = { isValid: false, errMsg: "Enter valid email"  , isEmpty: false};
+      errors.emailId = { isValid: false, errMsg: "Enter valid email"  , isEmpty: false};
     }
     if (errors.password.isValid && values.password.length < 4) {
       errors.password = {
@@ -116,32 +115,30 @@ const Register = (props) => {
       };
     }
     if (
-      errors.mobile_number.isValid &&
-      !regexPhone.test(values.mobile_number)
+      errors.mobile.isValid &&
+      !regexPhone.test(values.mobile)
     ) {
-      errors.mobile_number = {
+      errors.mobile = {
         isValid: false,
         errMsg: "Enter valid mobile number",
         isEmpty: false
       };
     }
-
-    setCanSubmit(
-      Object.keys(errors).reduce((prev, key) => {
-        return prev && errors[key].isValid;
-      }, true)
-    );
-
     return errors;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFormError(validate(formData));
-    if (canSubmit) {
+    const errors = validate(formData)
+    const canSubmitForm = Object.keys(errors).reduce((prev, key) => {
+        return prev && errors[key].isValid;
+      }, true)
+    setFormError(errors);
+    if (canSubmitForm) {
       registerAccount(formData)
         .then((response) => {
-          if (response.status === 201) {
+          console.log(response)
+          if (response.status === 200) {
             setRegisterSuccess(true);
            /* props.setAuthenticated(true);
             props.closePopup(true);

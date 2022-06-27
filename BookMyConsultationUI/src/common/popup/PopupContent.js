@@ -12,6 +12,7 @@ import BookAppointment from "../../screens/doctorList/BookAppointment";
 import DoctorDetails from "../../screens/doctorList/DoctorDetails";
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import RateAppointment from "../../screens/appointment/RateAppointment";
 const useStyles = makeStyles({
   tabs: {
         "& .MuiTabs-indicator": {
@@ -51,6 +52,10 @@ const BookAppointmentPopupContent = (props) => {
     )
 }
 
+const AppointmentRatingPopupContent = (props) => {
+    return <RateAppointment {...props}/>
+}
+
 const DoctorDetailsPopupContent = (props) => {
     return <DoctorDetails doctorDetails={props.doctorData} />
 }
@@ -59,13 +64,14 @@ const getPopupTitle= (type) => {
         case "Authentication" : return type; 
         case "BookAppointment" : return "Book An Appointment"; 
         case "DoctorDetails" : return "Doctor Details"; 
+        case "AppointmentRating" : return "Rate an Appointment";
         default: return "";
     }
 }
 export const PopupContent = (props) => {
     const { popupType, popupData, closePopup } = props  
     const title = getPopupTitle(popupType)
-    return <Card className="popup__header_container">
+    return <Card className={`popup__header_container ${ popupType !== "Authentication" ? 'expanded' : '' }`}>
                 <CardHeader  className="popup__header"      
                     title={title}
                 />
@@ -79,6 +85,10 @@ export const PopupContent = (props) => {
                     {popupType === "DoctorDetails" &&
                         <DoctorDetailsPopupContent doctorData={popupData} />
                     }
+                    {popupType === "AppointmentRating" &&
+                        <AppointmentRatingPopupContent appointmentRatingData={popupData} closePopup={closePopup} />
+                    }
+                    
                 </CardContent>
             </Card>
 

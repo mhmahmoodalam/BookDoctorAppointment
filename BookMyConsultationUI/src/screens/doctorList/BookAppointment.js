@@ -77,7 +77,7 @@ const BookAppointment = (props) => {
             autoComplete="off"            
             >
             <Grid item xs >
-                <FormControl fullWidth>
+                <FormControl >
                     <TextField 
                         disabled
                         id="doctor_name" 

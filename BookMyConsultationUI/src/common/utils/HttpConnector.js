@@ -142,3 +142,27 @@ export const bookAppointment = (formData) => {
       new Error("Error while booking appointment");
     });
 };
+
+
+export const rateAppointment = (formData) => {
+  return fetch(baseUrl + `/ratings`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      Authorization: "Bearer " + getToken(),
+    },
+    body: JSON.stringify(formData),
+  })
+  .then(response => {
+    if(response.status === 200){
+      return true
+    }else if(response.status === 400){
+      return false
+    }
+  })
+  .catch((e) => {
+      console.log(e)
+      new Error("Error while booking appointment");
+    });
+};

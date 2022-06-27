@@ -1,6 +1,10 @@
 .popup__header_container{    
     border: none;
     border-radius: 0px;
+    
+}
+.popup__header_container.expanded{
+    width: 40vw;
 }
 .popup__header {
     border: none;

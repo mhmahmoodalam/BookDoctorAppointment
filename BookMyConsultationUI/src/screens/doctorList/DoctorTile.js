@@ -3,6 +3,7 @@ import React,{ useState } from "react";
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from "@material-ui/core";
 const useStyles = makeStyles({
@@ -22,7 +23,16 @@ const useStyles = makeStyles({
         margin: '15px',
         padding: '20px',
         cursor: 'pointer'
-    }
+    },
+    rating: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        '& > * + *': {
+          marginLeft: 8,
+        },
+      },
   });
 
 const DoctorTile = (props) => {
@@ -38,9 +48,17 @@ const DoctorTile = (props) => {
                 <Typography gutterBottom variant="body2" component="p">
                     Speciality : {speciality}
                 </Typography>
-                <Typography gutterBottom variant="body2" component="p">
-                    Rating : {rating}
-                </Typography>
+                <div className={classes.rating}>
+                    <Typography component="p" variant="body2">
+                        Rating: 
+                    </Typography>
+                    <Rating name="rating" 
+                        defaultValue={rating} 
+                        precision={0.5}
+                        readOnly  
+                        size="small" 
+                    />
+                </div>
                 <div className={classes.btnContainer}>
                     <Button className={classes.btn} variant='contained' color="primary" size="small" onClick={() => {
                         if(isAuthenticated){
