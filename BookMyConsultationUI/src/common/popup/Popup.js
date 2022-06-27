@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Modal from 'react-modal';
 import "./Popup.css"
 import { PopupContent } from "./PopupContent";
