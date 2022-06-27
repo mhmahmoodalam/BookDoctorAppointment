@@ -46,7 +46,7 @@ const LoginPopupContent = (props) => {
 const BookAppointmentPopupContent = (props) => {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <BookAppointment doctorDetails={props.doctorData}/>
+            <BookAppointment doctorDetails={props.doctorData} closePopup={props.closePopup}/>
         </MuiPickersUtilsProvider>
     )
 }
@@ -63,7 +63,7 @@ const getPopupTitle= (type) => {
     }
 }
 export const PopupContent = (props) => {
-    const { popupType, popupData } = props  
+    const { popupType, popupData, closePopup } = props  
     const title = getPopupTitle(popupType)
     return <Card className="popup__header_container">
                 <CardHeader  className="popup__header"      
@@ -74,7 +74,7 @@ export const PopupContent = (props) => {
                         <LoginPopupContent {...props} />
                     }
                     {popupType === "BookAppointment" &&
-                        <BookAppointmentPopupContent doctorData={popupData} />
+                        <BookAppointmentPopupContent doctorData={popupData} closePopup={closePopup}/>
                     }
                     {popupType === "DoctorDetails" &&
                         <DoctorDetailsPopupContent doctorData={popupData} />

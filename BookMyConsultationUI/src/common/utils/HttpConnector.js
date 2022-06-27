@@ -2,7 +2,7 @@
  *  generic file for all fetch related opertaions
  */
 
-import { getToken } from "./TokenUtil";
+import { getToken, getUserName } from "./TokenUtil";
 
 const baseUrl = "";
 export const getDoctors = (filter = {}) => {
@@ -36,23 +36,6 @@ export const getSpeciality = () => {
     });
 };
 
-export const getFilteredDoctors = (filter = {}) => {
-  const queryParams = Object.keys(filter)
-    .map((key) => key + "=" + filter[key])
-    .join("&");
-  return fetch(baseUrl + `/movies?${queryParams}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-cache",
-    },
-  })
-    .then((response) => response.json())
-    .catch(() => {
-      new Error("Error while getting movies list");
-    });
-};
-
 export const getDoctorDetail = (id) => {
   return fetch(baseUrl + `/doctors/${id}`, {
     method: "GET",
@@ -63,21 +46,37 @@ export const getDoctorDetail = (id) => {
   })
     .then((response) => response.json())
     .catch(() => {
-      new Error("Error while getting movies details");
+      new Error("Error while getting Doctor details");
     });
 };
 
-export const getUserDetails = (username) => {
-  return fetch(baseUrl + `/users/${username}`, {
+export const getUserDetails = () => {
+  return fetch(baseUrl + `/users/${getUserName()}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       "Cache-Control": "no-cache",
+      Authorization: "Bearer " + getToken(),
     }
   })
     .then((response) => response.json())
     .catch(() => {
-      new Error("Error while getting movies show details");
+      new Error("Error while getting user  details");
+    });
+};
+
+export const getUserAppointments = () => {
+  return fetch(baseUrl + `/users/${getUserName()}/appointments`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      Authorization: "Bearer " + getToken(),
+    }
+  })
+    .then((response) => response.json())
+    .catch(() => {
+      new Error("Error while getting user appointment details");
     });
 };
 
@@ -92,7 +91,7 @@ export const getDoctorAvailableTimeSlot = (doctorId,date) => {
   })
     .then((response) => response.json())
     .catch(() => {
-      new Error("Error while saving booking details");
+      new Error("Error while getting available time slots");
     });
 };
 
@@ -109,6 +108,7 @@ export const login = (formData) => {
   });
 };
 
+
 export const registerAccount = (formData) => {
   return fetch(baseUrl + `/users/register`, {
     method: "POST",
@@ -118,4 +118,27 @@ export const registerAccount = (formData) => {
     },
     body: JSON.stringify(formData),
   });
+};
+
+export const bookAppointment = (formData) => {
+  return fetch(baseUrl + `/appointments`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      Authorization: "Bearer " + getToken(),
+    },
+    body: JSON.stringify(formData),
+  })
+  .then(response => {
+    if(response.status === 200){
+      return true
+    }else if(response.status === 400){
+      return false
+    }
+  })
+  .catch((e) => {
+      console.log(e)
+      new Error("Error while booking appointment");
+    });
 };

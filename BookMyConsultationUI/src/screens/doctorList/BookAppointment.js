@@ -1,25 +1,32 @@
 import React,{ useState, useEffect } from "react";
-import { FormControl, Grid, TextField, Button } from "@material-ui/core";
+import { FormControl, Grid, TextField, Button,Typography } from "@material-ui/core";
 import SelectField from "../../common/form/SelectField";
 import {
     KeyboardDatePicker,
   } from '@material-ui/pickers';
   import moment from "moment";
-import { getDoctorAvailableTimeSlot } from "../../common/utils/HttpConnector";
+import { getDoctorAvailableTimeSlot, bookAppointment, getUserDetails } from "../../common/utils/HttpConnector";
 const BookAppointment = (props) => {
     const { doctorDetails } = props
     const [selectedTimeSlot, setSelectedTimeSlot] = useState("")
     const [appointmentDate, setAppointmentDate ] = useState(moment())
     const [doctorTimeSlots, setDoctorAvailableTimeSlots] = useState([])
-    
+    const [isTimeSlotNull, setTimeSlotNull] = useState(false)
+    const [userDetails, setUserDetails] = useState({})
+
     const handleDateSelection = (date) => {
         setAppointmentDate(date)
+    }
+    const handleTimeSlotSelection= (e) => {
+        setSelectedTimeSlot(e.target.value)
+        setTimeSlotNull(false)
     }
     useEffect(() => {
         getDoctorAvailableTimeSlot(doctorDetails.id,moment(appointmentDate).format("YYYY-MM-DD"))
         .then( data => {
             setDoctorAvailableTimeSlots(data.timeSlot)
         })
+        getUserDetails().then(data => setUserDetails(data))
     },[])
 
     useEffect(() => {
@@ -31,7 +38,37 @@ const BookAppointment = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e)
+        const form = e.target
+        const timeSlot = form["timeSlot"].value
+        const priorMedicalHistory = form["priorMedicalHistory"].value || "NA"
+        const symptoms = form["symptoms"].value || "NA"
+        const doctorName = form["doctorName"].value || ""
+        if(!timeSlot){
+            setTimeSlotNull(true)
+            return
+        }
+        const formData = {
+            doctorId: doctorDetails.id,
+            doctorName,
+            userId: userDetails.emailId,
+            userName: userDetails.firstName,
+            userEmailId: userDetails.emailId,
+            timeSlot,
+            appointmentDate : moment(appointmentDate).format("YYYY-MM-DD"),
+            symptoms,
+            priorMedicalHistory
+        }
+        bookAppointment(formData)
+        .then(response => {
+            if(response){
+                alert("Booking Sucessful")                
+                props.closePopup()
+            }else {
+                alert("Either the slot is already booked or not available")
+            }
+        })
+        .catch(e => console.log(e))
+
     }
     return (
         <form
@@ -48,6 +85,7 @@ const BookAppointment = (props) => {
                         label="Doctor Name"
                         variant="standard" 
                         required
+                        name="doctorName"
                     />
                     <KeyboardDatePicker
                         autoOk={true}
@@ -62,21 +100,29 @@ const BookAppointment = (props) => {
                         KeyboardButtonProps={{
                             'aria-label': 'change date',
                         }}
-                        minDate={moment()}       
+                        minDate={moment()} 
+                        name="appointmentDate"      
                     />
                     <SelectField 
                       menudata={doctorTimeSlots} 
-                      handleSelection={(e) => setSelectedTimeSlot(e.target.value)} 
+                      handleSelection={handleTimeSlotSelection} 
                       selectedValue={selectedTimeSlot}
                       variant="standard"
                       label="TimeSlot"
+                      name="timeSlot"
                     />
+                    {isTimeSlotNull && 
+                        <Typography color="error">
+                            Select a time slot
+                        </Typography>
+                    }
                     <TextField
                         id="medical-history-multiline"
                         label="Medical History"
                         multiline
                         minRows={4}
                         defaultValue=""
+                        name="priorMedicalHistory"
                     />
                     <TextField
                         id="symtoms-multiline"
@@ -84,6 +130,7 @@ const BookAppointment = (props) => {
                         multiline
                         minRows={4}
                         defaultValue=""
+                        name="symptoms"
                         
                     />
                     <br />

@@ -16,12 +16,13 @@ const useStyles = makeStyles((theme) => ({
 
 const SelectField = (props) => {
   const classes = useStyles();
-  const { menudata, handleSelection, selectedValue, label, variant } = props
+  const { menudata, handleSelection, selectedValue, label, variant, name } = props
     return <FormControl variant={variant} className={classes.formControl}>
       {label && <InputLabel id="demo-simple-select-label">{label}</InputLabel>}
     <Select
       value={selectedValue}
       onChange={handleSelection}
+      name={name}
     >
       <MenuItem value="">
         <em>None</em>

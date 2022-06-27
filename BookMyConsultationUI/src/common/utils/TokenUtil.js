@@ -3,7 +3,7 @@
  */
 
 const tokenKey = "access-token";
-const customerUUIDKey = "UUID";
+const userNameKey = "username";
 
 export const isAuthenticated = () => {
   const token = getToken();
@@ -20,23 +20,24 @@ export const getToken = () => {
 export const setToken = (response) => {
   response.json().then(data => {
     sessionStorage.setItem(tokenKey, data.accessToken);
+    setUserName(data.emailAddress)
   })
   
 };
 
 export const clearToken = () => {
   sessionStorage.removeItem(tokenKey);
-  clearCustomerUUID();
+  clearUserName();
 };
 
-export const getCustomerUUID = () => {
-  return sessionStorage.getItem(customerUUIDKey);
+export const getUserName = () => {
+  return sessionStorage.getItem(userNameKey);
 };
 
-export const setCustomerUUID = (uuid) => {
-  sessionStorage.setItem(customerUUIDKey, uuid);
+export const setUserName = (username) => {
+  sessionStorage.setItem(userNameKey, username);
 };
 
-export const clearCustomerUUID = () => {
-  sessionStorage.removeItem(customerUUIDKey);
+export const clearUserName = () => {
+  sessionStorage.removeItem(userNameKey);
 };
