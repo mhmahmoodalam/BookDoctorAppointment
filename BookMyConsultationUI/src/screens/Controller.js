@@ -8,7 +8,7 @@ import Popup from "../common/popup/Popup"
 import { createTheme,  ThemeProvider } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
 import * as TokenUtil from "../common/utils/TokenUtil";
-
+import { logout } from "../common/utils/HttpConnector";
 export const MyContext = React.createContext({});
 
 
@@ -34,14 +34,19 @@ const Controller = () => {
   const [popupData, setPopupData] = React.useState(null);
   const [isAuthenticated, setAuthenticated] = React.useState(TokenUtil.isAuthenticated());
   const handleLogout = () => {
-    setAuthenticated(false)
-    TokenUtil.clearToken()
+    logout().then(() =>{
+      setAuthenticated(false)
+      TokenUtil.clearToken()
+    })
+    
   }
   const showPopup= (type,data) => {
     setPopupType(type)
     setPopupIsOpen(true)
     setPopupData(data)
   }
+  // storing the data into context so that it can be used through out
+  // context stores the popup type, popupdata and authentication
   const contextValue = {
     popupIsOpen,
     popupType,

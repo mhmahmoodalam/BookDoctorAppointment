@@ -108,6 +108,16 @@ export const login = (formData) => {
   });
 };
 
+export const logout = (formData) => {
+  return fetch(baseUrl + `/auth/logout`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      Authorization: "Bearer " + getToken(),
+    },
+  });
+};
 
 export const registerAccount = (formData) => {
   return fetch(baseUrl + `/users/register`, {

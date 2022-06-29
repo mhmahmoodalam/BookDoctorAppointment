@@ -103,10 +103,11 @@ const Login = (props) => {
     if (canSubmitForm) {
       login(formData)
         .then((response) => {
-          if (response.status === 200) {
-            props.setAuthenticated(true);
-            props.closePopup();
-            TokenUtil.setToken(response);            
+          if (response.status === 200) {            
+            TokenUtil.setToken(response).then(() => {
+              props.setAuthenticated(true);
+              props.closePopup();
+            })            
           } else if (response.status >= 400 && response.status < 500) {
             // won't show actual error as it can lead to guessing
             // error shows if username or password was wrong

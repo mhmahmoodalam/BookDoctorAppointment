@@ -127,6 +127,11 @@ const Register = (props) => {
     return errors;
   };
 
+  const resetForm = () => {
+    setFormError(generateFieldsErrorDefault(formInputFields));
+    setFormData(generateFormInitialValues(formInputFields));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validate(formData)
@@ -139,9 +144,7 @@ const Register = (props) => {
         .then((response) => {
           if (response.status === 200) {
             setRegisterSuccess(true);
-           /* props.setAuthenticated(true);
-            props.closePopup(true);
-            TokenUtil.setToken(response);*/
+            resetForm()
           } else if (response.status >= 400 && response.status < 500) {
             // won't show actual error as it can lead to guessing
             // error shows if username or password was wrong

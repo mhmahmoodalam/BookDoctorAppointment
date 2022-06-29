@@ -18,9 +18,14 @@ export const getToken = () => {
 };
 
 export const setToken = (response) => {
-  response.json().then(data => {
-    sessionStorage.setItem(tokenKey, data.accessToken);
-    setUserName(data.emailAddress)
+  return new Promise( (resolve, reject)=> {
+    response.json().then(data => {
+      sessionStorage.setItem(tokenKey, data.accessToken);
+      setUserName(data.emailAddress)
+      resolve(true)
+    }).catch(() =>{
+      reject(false)
+    })
   })
   
 };

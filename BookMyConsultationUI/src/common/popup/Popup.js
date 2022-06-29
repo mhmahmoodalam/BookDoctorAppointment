@@ -5,6 +5,11 @@ import { PopupContent } from "./PopupContent";
 import { MyContext } from "../../screens/Controller"
 Modal.setAppElement('#root');
 
+/*
+*
+* Single popup container for all kinds of popup based on popup type read from context
+*/
+
 const customPopupStyles = {
   content: {
     top: '50%',

@@ -13,6 +13,11 @@ import DoctorDetails from "../../screens/doctorList/DoctorDetails";
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import RateAppointment from "../../screens/appointment/RateAppointment";
+/*
+*
+* Single popup content container based on popuptype
+*/
+
 const useStyles = makeStyles({
   tabs: {
         "& .MuiTabs-indicator": {
@@ -68,6 +73,7 @@ const getPopupTitle= (type) => {
         default: return "";
     }
 }
+
 export const PopupContent = (props) => {
     const { popupType, popupData, closePopup } = props  
     const title = getPopupTitle(popupType)
