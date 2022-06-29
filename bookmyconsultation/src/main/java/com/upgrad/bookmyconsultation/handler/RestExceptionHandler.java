@@ -111,4 +111,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ErrorResponse().code(GenericErrorCode.GEN_001.getCode()).message(message).rootCause(stringWriter.getBuffer().toString());
 	}
 
+	private ErrorResponse errorResponse(final SlotUnavailableException slotUnavailableException) {
+		slotUnavailableException.printStackTrace();
+
+		final StringWriter stringWriter = new StringWriter();
+		slotUnavailableException.printStackTrace(new PrintWriter(stringWriter));
+
+		String message = slotUnavailableException.getMessage();
+		if (message == null) {
+			message = "Slot not available or already booked.";
+		}
+    return new ErrorResponse()
+        .code(HttpStatus.BAD_REQUEST.name())
+        .message(message)
+        .rootCause(stringWriter.getBuffer().toString());
+	}
+
 }
